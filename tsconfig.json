@@ -6,9 +6,13 @@
         "lib": [
             "es6",
             "dom"
-        ],
+				],
+				"experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
         "sourceMap": true,
-        "rootDir": "src"
+				"rootDir": "src",
+				"strict": true,
+				"noUnusedLocals": true
     },
     "exclude": [
         "node_modules",
