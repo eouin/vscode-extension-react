@@ -1,7 +1,10 @@
 'use strict';
 
 import * as vscode from 'vscode';
+import IoCConfig from "./IoCConfig";
 import ExtensionManager from './ExtensionManager';
+
+IoCConfig.configure();
 
 let manager = new ExtensionManager();
 

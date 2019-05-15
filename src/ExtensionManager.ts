@@ -3,7 +3,8 @@
 import * as vscode from 'vscode';
 import * as path from 'path';
 
-import { CDSProvider } from './nodeCDS';
+import ExtensionConfig from "./utils/ExtensionConfig";
+import DatamodelerTreeDataProvider from './tree/DatamodelerTreeDataProvider';
 
 function loadScript(context: vscode.ExtensionContext, path: string) {
 	return `<script src="${vscode.Uri.file(context.asAbsolutePath(path))
@@ -14,13 +15,13 @@ function loadScript(context: vscode.ExtensionContext, path: string) {
 export default class ExtensionManager {
 	public activate(context: vscode.ExtensionContext) {
 
-    const nodeCDSProvider = new CDSProvider(vscode.workspace.rootPath);
-		vscode.window.registerTreeDataProvider('sapux-datamodeler-canvas', nodeCDSProvider);
+		let dataProvider = new DatamodelerTreeDataProvider();
 
 		context.subscriptions.push(
-			vscode.commands.registerCommand('extemsion.sapux.datamodeler', () => {
+			vscode.window.registerTreeDataProvider(ExtensionConfig.DataModelerViewId, dataProvider),
+			vscode.commands.registerCommand(ExtensionConfig.Commands.Render, () => {
 				const panel = vscode.window.createWebviewPanel(
-					'datamodeler',
+					ExtensionConfig.ExtensionId,
 					'SAP UX Data Modeler',
 					vscode.ViewColumn.Active,
 					{
@@ -42,7 +43,7 @@ export default class ExtensionManager {
           <body>
             <div id="root"></div>
             ${loadScript(context, 'out/vendor.js')}
-            ${loadScript(context, 'out/edReact.js')}
+            ${loadScript(context, 'out/dataModeler.js')}
           </body>
           </html>
       `;
